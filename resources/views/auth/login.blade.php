@@ -43,7 +43,9 @@
         <p class="login-box-msg">Sign in to start your session</p>
 
         <form method="post" action="{{ url('/login') }}">
-            @csrf
+{{--        <form method="POST" action="/foo" >--}}
+{{--        <input type="hidden" value="{{ csrf_field() }}">--}}
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
 
             <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
                 <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
@@ -78,6 +80,12 @@
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div>
                 <!-- /.col -->
+            </div>
+            <hr>
+            <div class="form-group row mb-0">
+                <div class="col-md-8 offset-md-4">
+                    <a href="{{ url('/auth/redirect/facebook') }}" class="btn btn-primary"><i class="fa fa-facebook"></i> Facebook</a>
+                </div>
             </div>
         </form>
 
