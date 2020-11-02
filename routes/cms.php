@@ -19,3 +19,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 
 
 Route::resource('users', App\Http\Controllers\Cms\UserController::class);
+
+
+Route::resource('categories', App\Http\Controllers\Cms\CategoryController::class);
+Route::post('buildImageItem', 'BannerController@buildImageItem')
+    ->name('banner.buildImageItem');
