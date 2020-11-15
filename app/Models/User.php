@@ -2,72 +2,62 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
 
-
-/**
- * Class User
- * @package App\Models
- * @version October 12, 2020, 3:59 pm UTC
- *
- * @property string $name
- * @property string $email
- * @property string|\Carbon\Carbon $email_verified_at
- * @property string $password
- * @property string $remember_token
- */
 class User extends Authenticatable
 {
-//    use SoftDeletes;
+//    use HasApiTokens;
+//    use HasFactory;
+//    use HasProfilePhoto;
+//    use Notifiable;
+    use TwoFactorAuthenticatable;
 
-    public $table = 'users';
-
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
-
-
-
-    public $fillable = [
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
         'name',
         'email',
-        'email_verified_at',
         'password',
-        'remember_token'
+        'provider',
+        'provider_id'
     ];
 
     /**
-     * The attributes that should be casted to native types.
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'name' => 'string',
-        'email' => 'string',
         'email_verified_at' => 'datetime',
-        'password' => 'string',
-        'remember_token' => 'string'
     ];
 
     /**
-     * Validation rules
+     * The accessors to append to the model's array form.
      *
      * @var array
      */
-    public static $rules = [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|max:255',
-        'email_verified_at' => 'nullable',
-        'password' => 'required|string|max:255',
-        'remember_token' => 'nullable|string|max:100',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+    protected $appends = [
+        'profile_photo_url',
     ];
-
-
 }
